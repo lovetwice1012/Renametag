@@ -18,21 +18,26 @@ class Main extends PluginBase implements Listener{
 	}
 
 	public function onJoin(PlayerJoinEvent $event){
-		$this->fly[$event->getPlayer()->getName()] = false;
+		
 	}
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
     {
         if ($label === "atama") {
             if ($sender->isOp()) {
-                $player = $this->getServer()->getPlayer($args[0]);
-                $tag = $args[1];
-                $player->setNameTag("[§d".$tag."§r]".$player->getName());
-                $player->setDisplayName("[§d".$tag."§r]".$player->getName());
-		$sender->sendMessage("頭の上の名前表示が"."[§d".$tag."§r]".$player->getName()."になりました");
+		if(isset($args[0])&&isset($args[1]){
+                    $player = $this->getServer()->getPlayer($args[0]);
+                    $tag = $args[1]; 
+                    $player->setNameTag("[§d".$tag."§r]".$player->getName());
+                    $player->setDisplayName("[§d".$tag."§r]".$player->getName());
+	    	    $sender->sendMessage("頭の上の名前表示が"."[§d".$tag."§r]".$player->getName()."になりました");
+		}else{
+		    $sender->sendMessage("§c使用方法:/atama 変更したい人の名前　変更後の名前");
+		}
             }else{
 	        $sender->sendMessage("§c権限がありません");
 	    }
+	
         }
         return true;
     }
