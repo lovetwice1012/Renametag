@@ -27,9 +27,11 @@ class Main extends PluginBase implements Listener{
             if ($sender->isOp()) {
                 $player = $this->getServer()->getPlayer($args[0]);
                 $tag = $args[1];
-                $player->setNameTag("[$tag]".$player->getName());
-                $player->setDisplayName("[$tag]".$player->getName());
-            }
+                $player->setNameTag("[§d$tag]".$player->getName());
+                $player->setDisplayName("[§d$tag]".$player->getName());
+		$sender->sendMessage("頭の上の名前表示が"."[§d$tag]".$player->getName()."になりました");
+            }else{
+	        $sender->sendMessage("§c権限がありません");
         }
         return true;
     }
