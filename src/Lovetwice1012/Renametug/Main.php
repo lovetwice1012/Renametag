@@ -32,6 +32,7 @@ class Main extends PluginBase implements Listener{
 		$sender->sendMessage("頭の上の名前表示が"."[§d$tag]".$player->getName()."になりました");
             }else{
 	        $sender->sendMessage("§c権限がありません");
+	    }
         }
         return true;
     }
