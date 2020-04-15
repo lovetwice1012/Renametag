@@ -25,7 +25,7 @@ class Main extends PluginBase implements Listener{
     {
         if ($label === "atama") {
             if ($sender->isOp()) {
-		if(isset($args[0])&&isset($args[1]){
+		if(isset($args[0])&&isset($args[1])){
                     $player = $this->getServer()->getPlayer($args[0]);
                     $tag = $args[1]; 
                     $player->setNameTag("[§d".$tag."§r]".$player->getName());
