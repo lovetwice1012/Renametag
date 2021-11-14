@@ -59,8 +59,10 @@ class Main extends PluginBase implements Listener{
 
 			$config->set($name, $nametag);
 			$config->save();
-			$player->setNameTag($nametag);
-			$player->setDisplayName($nametag);
+			if($player instanceof Player){
+				$player->setNameTag($nametag);
+				$player->setDisplayName($nametag);
+			}
 			$sender->sendMessage("頭の上の名前表示が".$config->get($name)."になりました");
 		}
 		return true;
