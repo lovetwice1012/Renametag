@@ -6,13 +6,12 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
 class Main extends PluginBase implements Listener{
-
-	private $fly;
+	/** @var Config $myConfig */
 	public $myConfig;
 
 	public function onEnable() : void{
@@ -25,7 +24,6 @@ class Main extends PluginBase implements Listener{
 	public function onJoin(PlayerJoinEvent $event){
 		$config = $this->myConfig;
 		$player = $event->getPlayer();
-		/** @var Config $config */
 		if($config->exists($player->getName())){
 			$player->setNameTag($config->get($player->getName()));
 			$player->setDisplayName($config->get($player->getName()));
@@ -35,39 +33,37 @@ class Main extends PluginBase implements Listener{
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 		$config = $this->myConfig;
 		if($label === "atama"){
-			if($this->getServer()->isOp($sender->getName())){
-				if(!isset($args[0])){
-					$sender->sendMessage("§c使用方法:/atama 変更したい人の名前　変更後の名前");
-					return true;
-				}
-
-				$name = $args[0];
-				$player = $this->getServer()->getPlayer($name);
-				if($player instanceof Player){
-					$name = $player->getName();
-				}
-
-				if(isset($args[1])){
-					$tag = $args[1];
-					$nametag = "[§d".$tag."§r]".$name;
-					//$displayName = "[§d".$tag."§r]".$name;
-				}else{
-					$nametag = $name;
-					//$displayName = $name;
-				}
-
-				$config->set($name, $nametag);
-				$config->save();
-				$player->setNameTag($nametag);
-				$player->setDisplayName($nametag);
-
-				$sender->sendMessage("頭の上の名前表示が".$config->get($name)."になりました");
-			}else{
+			if(!$this->getServer()->isOp($sender->getName())){
 				$sender->sendMessage("§c権限がありません");
+				return true;
+			}
+			if(!isset($args[0])){
+				$sender->sendMessage("§c使用方法:/atama 変更したい人の名前　変更後の名前");
+				return true;
 			}
 
+			$name = $args[0];
+			$player = $this->getServer()->getPlayerByPrefix($name);
+			if($player instanceof Player){
+				$name = $player->getName();
+			}
+
+			if(isset($args[1])){
+				$tag = $args[1];
+				$nametag = "[§d".$tag."§r]".$name;
+				//$displayName = "[§d".$tag."§r]".$name;
+			}else{
+				$nametag = $name;
+				//$displayName = $name;
+			}
+
+			$config->set($name, $nametag);
+			$config->save();
+			$player->setNameTag($nametag);
+			$player->setDisplayName($nametag);
+			$sender->sendMessage("頭の上の名前表示が".$config->get($name)."になりました");
 		}
 		return true;
 	}
-
 }
+
